@@ -116,8 +116,8 @@ Memuat data yang terdiri dari: <br>
   1. Misalkan input id yang digunakan berupa angka 431 dan jumlah rekomendasi yang diminta 10:
      ![image](https://github.com/user-attachments/assets/8f29494e-28bd-4d5f-a971-e9d1f04ac780) <br>
   2. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas:
-     ![image](https://github.com/user-attachments/assets/f77afda0-0ea1-411b-a6b2-6d113cbed309)
-     
+     ![image](https://github.com/user-attachments/assets/ddcc564e-aaa9-4023-abf9-a5b01f1b2528)
+
      Menampilkan 10 film rekomendasi berdasarkan id pengguna yang diinput.
 
 ## Evaluation
