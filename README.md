@@ -122,7 +122,8 @@ Memuat data yang terdiri dari: <br>
 
 ## Evaluation
 ### Evaluasi Collaborative filtering dengan Plot History Training Model
-![image](https://github.com/user-attachments/assets/bfc3e6f6-9f93-4cf1-b298-54a79ab3b910) <br>
+![image](https://github.com/user-attachments/assets/219cb049-7456-43fc-b4cd-c52e53edd02d)
+ <br>
 Gambar di atas merupakan plot RMSE dari data pelatihan dan validasi selama 100 epoch. Nilai RMSE ini menjadi nilai yang digunakan untuk mengevaluasi collaborative filtering. Grafik yang dihasilkan menunjukkan RMSE selama pelatihan model, dimana performa dipantau, terakhir diperoleh nilai error akhir sebesar sekitar 0.19 dan error pada data validasi sebesar 0.20. Menunjukkan bahwa prediksi model cukup akurat dengan rata-rata kesalahan kurang dari 0.2 poin pada skala tersebut. <br>
 Berikut adalah rumus RMSE yang digunakan dalam perhitungan [[3]](https://ejournal.almaata.ac.id/index.php/IJUBI/article/view/4274): <br>
 ![image](https://github.com/user-attachments/assets/0f516332-89f5-4bd6-a0c8-511505e2d1bd)
