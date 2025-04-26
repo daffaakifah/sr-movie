@@ -24,23 +24,37 @@ Solusi yang akan digunakan untuk permasalahan di atas adalah:
 ### Penjelasan singkat mengenai dataset
 Dataset yang digunakan dalam laporan ini adalah Movie Recommendation Data bersumber dari kaggle yang dapat diakses secara publik pada link: https://www.kaggle.com/datasets/rohan4050/movie-recommendation-data/code . Tidak keseluruhan dataset dari sumber digunakan, dataset yang digunakan yaitu movies, ratings, dan tags. Berikut akan dijelaskan masing-masing secara singkat singkat mengenai dataset. <br>
 #### Movies
-Memuat data yang terdiri dari: <br>
+Dataset movies memiliki 9742 baris dan 3 kolom yang terdiri dari kolom: <br>
 - movieId: Memuat nilai Id dari film yang bernilai unik (masing-masing film memiliki id yang berbeda). Tipe data integer.
 - title: Memuat judul dari film. Tipe data object.
 - genres: Memuat genre dari film, nilai genre yang dimiliki masing-masing bisa lebih dari satu. Tipe data object
 Dengan keterangan, jumlah data movie :  9742
 #### Ratings
-Memuat data yang terdiri dari: <br>
+Dataset ratings memiliki 100836 baris dan 4 kolom yang terdiri dari kolom: <br>
 - userId: Memuat nilai id unik dari masing-masing user
 - movieId: Memuat nilai Id dari filmmovie yang bernilai unik (masing-masing film memiliki id yang berbeda)
 - rating: Memuat nilai rating untuk setiap film
 - timestamp: Memuat detik Coordinated Universal Time(UTC)
 Dengan keterangan, jumlah user unik pada ratings :  610, jumlah movie unik pada ratings :  9724 serta jumlah total data ratings :  100836
 #### Tags
-Memuat data yang terdiri dari: <br>
+Dataset tags memiliki 3683 baris dan 4 kolom yang terdiri dari kolom: <br>
 - userId: Memuat nilai id unik dari masing-masing user
 - movieId: Memuat nilai Id dari filmmovie yang bernilai unik (masing-masing film memiliki id yang berbeda)
 - tag: Tag/label yang diberikan oleh seorang pengguna kepada sebuah film.
+
+### Mengecek missing value dan duplikat pada dataset
+#### Movies
+![image](https://github.com/user-attachments/assets/53dc07d0-bf9e-415b-a983-959faa5af0be) 
+<br>
+Dataset movies tidak memiliki baik missing value maupun data yang duplikat.
+#### Ratings
+![image](https://github.com/user-attachments/assets/1f128ad3-2bd5-4d94-9644-2803ce2e3f7e)
+<br>
+Dataset ratings tidak memiliki baik missing value maupun data yang duplikat.
+#### Tags
+![image](https://github.com/user-attachments/assets/fc3e1fef-d2ab-4c48-9023-55f76a79c5ae)
+<br>
+Dataset tags tidak memiliki baik missing value maupun data yang duplikat.
 
 ### Eksploratory Data Analysis (EDA)
 - Melihat distribusi data rating dengan histogram
@@ -64,16 +78,20 @@ Memuat data yang terdiri dari: <br>
   Gambar di atas menunjukkan scatterplot yang menggambarkan hubungan antara jumlah rating yang diterima sebuah film dengan rata-rata ratingnya. Terlihat bahwa film dengan jumlah rating sedikit memiliki variasi rata-rata rating yang cukup besar, mulai dari sangat rendah hingga sangat tinggi. Sedangkan film dengan jumlah rating banyak cenderung memiliki rata-rata rating yang stabil di kisaran 3 sampai 4. Jadi, semakin banyak rating yang diterima, rata-rata rating film cenderung lebih konsisten.
 
 ## Data Preparation
-#### Data Preparation untuk Dataset Film dan Rating
-- Menghapus baris dengan judul film duplikat agar setiap film hanya muncul sekali.
-- Menghapus baris yang memiliki nilai kosong pada kolom judul film untuk memastikan data lengkap.
-- Memfilter hanya baris dengan judul bertipe string untuk menghindari data yang tidak valid.
-- Mengubah tipe data kolom movieId pada kedua dataset (film dan rating) menjadi string agar konsisten dan memudahkan pengolahan data selanjutnya.
-#### Data Preparation untuk Dataset Tag dan Penggabungan dengan Dataset Film
-- Mengelompokkan data tag berdasarkan movieId dan menggabungkan semua tag terkait menjadi satu string per film.
-- Menyamakan tipe data kolom movieId pada dataset movies dan tag menjadi string agar penggabungan data dapat dilakukan dengan benar.
-- Menggabungkan (merge) data tag yang sudah digabungkan ke dataset film berdasarkan movieId.
-- Membuat kolom baru content yang menggabungkan judul film, genre, dan tag menjadi satu teks, yang nantinya digunakan untuk metode content-based filtering dalam rekomendasi film.
+- **Data Filtering** <br>
+Memfilter hanya baris yang judul filmnya bertipe string untuk menghindari data yang tidak valid. Selain itu, tipe data kolom movieId pada dataset film dan rating diubah menjadi string agar konsisten dan memudahkan pengolahan data selanjutnya.
+### Content-Based Filltering Preparation
+- **Penggabungan Tag Film** <br>
+Data tag dikelompokkan berdasarkan movieId dan semua tag yang terkait digabungkan menjadi satu string per film. Tipe data kolom movieId pada dataset movies dan tag disamakan menjadi string agar bisa digabungkan dengan benar. Data tag yang sudah digabungkan kemudian di-merge ke dataset film berdasarkan movieId.
+- **Ekstraksi Fitur TF-IDF** <br>
+Ekstraksi fitur dengan TF-IDF (Term Frequency-Inverse Document Frequency) dilakukan untuk mengubah kolom content yang berisi gabungan judul, genre, dan tag film menjadi matriks fitur numerik yang merepresentasikan pentingnya kata dalam setiap film. Selanjutnya, dihitung matriks kemiripan kosinus antar film yang digunakan untuk sistem rekomendasi berbasis konten.
+### Collaborative Filltering Preparation
+- **Encode Label** <br>
+ID asli pengguna dan film diubah menjadi indeks numerik berurutan untuk memudahkan pemrosesan data dalam model rekomendasi. Kolom baru dengan indeks tersebut ditambahkan ke data rating.
+- **Menentukan Skala Data** <br>
+Menghitung jumlah total pengguna dan film serta nilai rating minimum dan maksimum untuk memahami skala data dan mengatur parameter model rekomendasi.
+- **Normalisasi dan Split Data**
+Data rating diacak untuk menghindari bias, kemudian nilai rating dinormalisasi ke rentang 0 hingga 1. Data dibagi menjadi 80% untuk pelatihan dan 20% untuk validasi, dengan memisahkan fitur (user dan movie) dan target (rating) untuk proses pelatihan model.
 
 ## Modeling and Result
 ### Modeling dengan Content-Based Filtering
@@ -82,10 +100,15 @@ Memuat data yang terdiri dari: <br>
 - **Kelebihan Content-based filtering yaitu** mudah dijelaskan karena dapat menunjukkan alasan di balik rekomendasi. Selain itu, sistem ini mampu merekomendasikan item yang belum pernah dinilai oleh pengguna lain [2]. <br>
 - **Kekurangan Content-based filtering yaitu** membutuhkan profil pengguna yang berisi minat dan ketertarikan, sehingga kurang efektif untuk pengguna baru yang belum memiliki riwayat aktivitas (cold start problem) [2].
 
-#### Penjelasan tahapan yang digunakan
-- Menggunakan metode TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengubah kolom content (gabungan judul, genre, dan tag film) menjadi matriks fitur numerik yang merepresentasikan pentingnya kata dalam setiap film. <br>
-- Menghitung matriks kemiripan kosinus antara semua film, yang mengukur tingkat kemiripan konten satu film dengan film lainnya berdasarkan fitur TF-IDF. Matriks kemiripan kosinus ini digunakan sebagai dasar dalam sistem rekomendasi berbasis konten. <br>
-- Membuat fungsi  yang akan memeriksa keberadaan judul film dalam dataset, kemudian menghitung dan mengurutkan skor kemiripan kosinus dengan film lain untuk mengembalikan daftar rekomendasi film paling mirip berdasarkan nilai tertinggi (top_n). <br>
+#### Tahapan modeling dengan Content-Based Filtering
+- **Fungsi untuk Rekomendasi Berbasis Konten** <br>
+  Berikut adalah proses yang terjadi dalam fungsi tersebut:
+  1. Fungsi memeriksa apakah judul film yang dicari ada di dataset; jika tidak ditemukan, mengembalikan pesan bahwa film tidak ditemukan.
+  2. Jika film ada, fungsi mencari indeks film tersebut dalam dataset.
+  3. Mengambil skor kemiripan kosinus antara film yang dicari dengan semua film lain.
+  4. Mengurutkan skor kemiripan dari yang paling mirip ke yang kurang mirip.
+  5. Memilih film dengan skor tertinggi (kecuali film itu sendiri) sebanyak jumlah rekomendasi yang diinginkan (top_n).
+  6. Mengembalikan daftar judul film yang paling mirip sebagai rekomendasi berbasis konten.
 
 ### Modeling dengan Collaborative Filtering
 #### Penjelasan singkat mengenai model
@@ -93,36 +116,40 @@ Memuat data yang terdiri dari: <br>
 - **Kelebihan dari user-based collaborative filtering adalah** kemampuannya menghasilkan rekomendasi berkualitas [2]. <br>
 - **Kekurangan collaborative filtering adalah** kompleksitas perhitungan meningkat seiring bertambahnya jumlah pengguna, yang dapat memperlambat proses rekomendasi [2]. <br>
 
-#### Penjelasan tahapan yang digunakan
-- Mengonversi ID asli pengguna dan film menjadi indeks numerik berurutan, lalu menambahkan kolom indeks ke data rating untuk persiapan model.
-- Menentukan total pengguna dan film serta rentang nilai rating untuk memahami skala data dan mengatur parameter model.
-- Mengacak data rating untuk menghindari bias dan menormalisasi nilai rating ke rentang 0–1.
-- Membagi data menjadi 80% pelatihan dan 20% validasi, memisahkan fitur (user dan movie) dan target (rating).
-- Membangun model RecommenderNet yang menggunakan embedding untuk merepresentasikan pengguna dan film, menghitung interaksi dengan dot product dan bias, serta menghasilkan prediksi rating antara 0 dan 1 menggunakan fungsi sigmoid.
-- Menginisialisasi dan mengompilasi model dengan loss function binary crossentropy, optimizer Adam (learning rate 0.001), dan metrik RMSE untuk evaluasi performa.
+#### Tahapan modeling dengan Collaborative Filtering
+- **Menggunakan Model RecommenderNet** <br>
+  Kelas RecommenderNet menggunakan embedding untuk merepresentasikan pengguna dan film, kemudian menghitung interaksi keduanya dengan dot product dan menambahkan bias pengguna serta bias film. Hasilnya diproses dengan fungsi sigmoid untuk menghasilkan prediksi rating dalam rentang 0 hingga 1.
+- **Kompilasi Model** <br>
+  Model RecommenderNet diinisialisasi dengan jumlah pengguna, film, dan ukuran embedding 50. Model kemudian dikompilasi menggunakan fungsi loss binary crossentropy, optimizer Adam dengan learning rate 0.001, serta metrik Root Mean Squared Error (RMSE) untuk mengukur performa prediksi.
+- **Training Model** <br>
+  Model dilatih menggunakan data pelatihan selama 100 epoch dengan batch size 64, sambil memantau performa pada data validasi. Proses pelatihan ini bertujuan untuk mengoptimalkan bobot model agar dapat memprediksi rating dengan akurat. Hasil dari training, diperoleh nilai error akhir (Root Mean Squared Error) sekitar 0.19 pada data pelatihan dan sekitar 0.20 pada data validasi, yang menunjukkan model memiliki performa yang cukup baik
 
 ### TOP-N RECOMMENDATION
 - Untuk content-based filtering, menggunakan fungsi yang telah didasari dengan model untuk mencari judul film yang mirip dengan input pengguna dan memberikan rekomendasi film serupa. Jika judul tidak ditemukan, program menyarankan judul yang dekat agar pengguna bisa mencoba lagi.
   Berikut adalah simulasi penggunaan content-based filtering:
-  1. Misalkan menggunakan film 'Minions (2015) dan rekomendasi yang diminta 10: 
-     ![image](https://github.com/user-attachments/assets/3c2c2f3f-0b29-43d4-8119-ce174009e837) <br>
-  2. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas:
+  1. Misalkan ingin mencari rekomendasi untuk film minions dan rekomendasi yang diminta 10: <br>
+     ![image](https://github.com/user-attachments/assets/bae09b09-a2f8-4a22-8d12-b05392c464ff)
+     <br>
+  3. Kemudian sesuai dengan instruksi hasil sebelumnya mengganti keyword judul yang dicari dengan 'Minions (2015) dan rekomendasi yang diminta 10: <br>
+     ![image](https://github.com/user-attachments/assets/3c2c2f3f-0b29-43d4-8119-ce174009e837)
+     <br>
+  5. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas: <br>
      ![image](https://github.com/user-attachments/assets/6fb2506c-e893-405b-a5f4-505d3def3e5e)
-     
+     <br>
      Menampilkan 10 film rekomendasi berdasarkan nama film yang diinput.
      
 - Untuk collaborative filtering, menggunakan fungsi yang telah didasari dengan model yang meminta userId dan jumlah rekomendasi, lalu menampilkan daftar film yang direkomendasikan berdasarkan rating yang juga menghubungkan pengguna serupa dengan kesamaan dalam preferensi dan perilaku.
   Berikut adalah simulasi penggunaan collaborative filtering:
-  1. Misalkan input id yang digunakan berupa angka 431 dan jumlah rekomendasi yang diminta 10:
+  1. Misalkan input id yang digunakan berupa angka 432 dan jumlah rekomendasi yang diminta 10:
      ![image](https://github.com/user-attachments/assets/8f29494e-28bd-4d5f-a971-e9d1f04ac780) <br>
   2. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas:
-     ![image](https://github.com/user-attachments/assets/ddcc564e-aaa9-4023-abf9-a5b01f1b2528)
-
+     ![image](https://github.com/user-attachments/assets/f55edc6a-ea63-4bbd-b6eb-ad2d6f9e1c93)
+     <br>
      Menampilkan 10 film rekomendasi berdasarkan id pengguna yang diinput.
 
 ## Evaluation
 ### Evaluasi Collaborative filtering dengan Plot History Training Model
-![image](https://github.com/user-attachments/assets/219cb049-7456-43fc-b4cd-c52e53edd02d)
+![image](https://github.com/user-attachments/assets/cec8e9c6-3437-4df3-9912-368468edcb63)
  <br>
 Gambar di atas merupakan plot RMSE dari data pelatihan dan validasi selama 100 epoch. Nilai RMSE ini menjadi nilai yang digunakan untuk mengevaluasi collaborative filtering. Grafik yang dihasilkan menunjukkan RMSE selama pelatihan model, dimana performa dipantau, terakhir diperoleh nilai error akhir sebesar sekitar 0.19 dan error pada data validasi sebesar 0.20. Menunjukkan bahwa prediksi model cukup akurat dengan rata-rata kesalahan kurang dari 0.2 poin pada skala tersebut. <br>
 Berikut adalah rumus RMSE yang digunakan dalam perhitungan [[3]](https://ejournal.almaata.ac.id/index.php/IJUBI/article/view/4274): <br>
