@@ -157,13 +157,13 @@ Data rating diacak untuk menghindari bias, kemudian nilai rating dinormalisasi k
   1. Misalkan input id yang digunakan berupa angka 432 dan jumlah rekomendasi yang diminta 10:
      ![image](https://github.com/user-attachments/assets/8f29494e-28bd-4d5f-a971-e9d1f04ac780) <br>
   2. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas:
-     ![image](https://github.com/user-attachments/assets/f55edc6a-ea63-4bbd-b6eb-ad2d6f9e1c93)
+     ![image](https://github.com/user-attachments/assets/27332b8f-154b-414c-8572-90355c8415e9)
      <br>
      Menampilkan 10 film rekomendasi berdasarkan id pengguna yang diinput.
 
 ## Evaluation
 ### Evaluasi Collaborative filtering dengan Plot History Training Model
-![image](https://github.com/user-attachments/assets/cec8e9c6-3437-4df3-9912-368468edcb63)
+![image](https://github.com/user-attachments/assets/670fc88f-a3f2-46f2-bd1d-0543c6af59d3)
  <br>
 Gambar di atas merupakan plot RMSE dari data pelatihan dan validasi selama 100 epoch. Nilai RMSE ini menjadi nilai yang digunakan untuk mengevaluasi collaborative filtering. Grafik yang dihasilkan menunjukkan RMSE selama pelatihan model, dimana performa dipantau, terakhir diperoleh nilai error akhir sebesar sekitar 0.19 dan error pada data validasi sebesar 0.20. Menunjukkan bahwa prediksi model cukup akurat dengan rata-rata kesalahan kurang dari 0.2 poin pada skala tersebut. <br>
 Berikut adalah rumus RMSE yang digunakan dalam perhitungan [[3]](https://ejournal.almaata.ac.id/index.php/IJUBI/article/view/4274): <br>
