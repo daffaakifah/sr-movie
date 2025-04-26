@@ -36,11 +36,25 @@ Dataset ratings memiliki 100836 baris dan 4 kolom yang terdiri dari kolom: <br>
 - rating: Memuat nilai rating untuk setiap film
 - timestamp: Memuat detik Coordinated Universal Time(UTC)
 Dengan keterangan, jumlah user unik pada ratings :  610, jumlah movie unik pada ratings :  9724 serta jumlah total data ratings :  100836
+<br>
+Berikut adalah statistik deskriptif untuk dataset ratings: <br>
+
+![image](https://github.com/user-attachments/assets/41acef6c-953a-44bc-bd36-b487f2905c93)
+<br>
+Berdasarkan tabel statistik deskriptif dataset ratings tersebut, dapat disimpulkan beberapa hal berikut:
+- Dataset memiliki total 100.836 data rating dari pengguna. <br>
+- Rata-rata rating yang diberikan adalah sekitar 3.5 dengan standar deviasi sekitar 1.04, menunjukkan variasi penilaian yang cukup beragam. <br>
+- Nilai rating terendah adalah 0.5 dan tertinggi 5.0, dengan nilai tengah (median) 3.5. <br>
+- Sebagian besar rating berada di kisaran 3.0 hingga 4.0 (kuartil 25% dan 75%). <br>
+- Jumlah pengguna unik mencapai 610, dengan ID pengguna mulai dari 1 hingga 610. <br>
+- Jumlah film unik sangat besar, dengan ID film tertinggi mencapai 193.609.
+
 #### Tags
 Dataset tags memiliki 3683 baris dan 4 kolom yang terdiri dari kolom: <br>
 - userId: Memuat nilai id unik dari masing-masing user
 - movieId: Memuat nilai Id dari filmmovie yang bernilai unik (masing-masing film memiliki id yang berbeda)
 - tag: Tag/label yang diberikan oleh seorang pengguna kepada sebuah film.
+<br>
 
 ### Mengecek missing value dan duplikat pada dataset
 #### Movies
