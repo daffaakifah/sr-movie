@@ -144,7 +144,7 @@ Data rating diacak untuk menghindari bias, kemudian nilai rating dinormalisasi k
   1. Misalkan ingin mencari rekomendasi untuk film minions dan rekomendasi yang diminta 10: <br>
      ![image](https://github.com/user-attachments/assets/bae09b09-a2f8-4a22-8d12-b05392c464ff)
      <br>
-  3. Kemudian sesuai dengan instruksi hasil sebelumnya mengganti keyword judul yang dicari dengan 'Minions (2015) dan rekomendasi yang diminta 10: <br>
+  3. Kemudian sesuai dengan instruksi hasil sebelumnya mengganti keyword judul yang dicari dengan 'Minions (2015)' dan rekomendasi yang diminta 10: <br>
      ![image](https://github.com/user-attachments/assets/3c2c2f3f-0b29-43d4-8119-ce174009e837)
      <br>
   5. Berikut merupakan output yang dihasilkan berdasarkan permintaan di atas: <br>
